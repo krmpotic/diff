@@ -1,18 +1,29 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 )
 
+var sd = flag.Bool("s", false, "string diff")
+
 func main() {
-	if len(os.Args) != 3 {
+	flag.Parse()
+	if len(flag.Args()) != 2 {
+		fmt.Fprintln(os.Stderr, "usage: diff [-s] aaa bbb")
 		os.Exit(1)
 	}
-	d, ok := NewFileDiff(os.Args[2], os.Args[1])
-	if !ok {
-		os.Exit(2)
-	}
 
-	fmt.Print(d)
+	switch {
+	case *sd:
+		d := NewStringDiff(flag.Arg(1), flag.Arg(0))
+		fmt.Print(d)
+	default:
+		d, ok := NewFileDiff(flag.Arg(1), flag.Arg(0))
+		if !ok {
+			os.Exit(2)
+		}
+		fmt.Print(d)
+	}
 }
