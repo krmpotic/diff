@@ -67,7 +67,8 @@ func (d *FileDiff) String() string {
 			if d.to[i] == d.from[j] {
 				s += fmt.Sprintln("  ", d.to[i])
 			} else {
-				s += fmt.Sprintln("  ", d.from[j], " --> ", d.to[i])
+				s += fmt.Sprintln("- ", d.from[j])
+				s += fmt.Sprintln("+ ", d.to[i])
 			}
 			i++
 			j++
